@@ -5,18 +5,26 @@ import cz.mg.annotations.requirement.Mandatory;
 import cz.mg.panel.Panel;
 import cz.mg.panel.settings.Alignment;
 import cz.mg.panel.settings.Fill;
+import cz.mg.refactoringtools.actions.RenamePackageAction;
 import cz.mg.refactoringtools.event.UserActionListener;
+import cz.mg.refactoringtools.filters.JavaFileFilter;
+import cz.mg.refactoringtools.services.Refactoring;
 
 import javax.swing.*;
+import java.nio.file.Path;
 
-public @Component class MovePackageDialog extends JDialog {
-    private static final String TITLE = "Move package";
+public @Component class RenamePackageDialog extends JDialog {
+    private static final String TITLE = "Rename package";
     private static final int DEFAULT_WIDTH = 640;
     private static final int DEFAULT_HEIGHT = 240;
     private static final int MARGIN = 8;
     private static final int PADDING = 8;
 
-    public MovePackageDialog(@Mandatory JFrame window) {
+    private final JTextField projectField;
+    private final JTextField fromField;
+    private final JTextField toField;
+
+    public RenamePackageDialog(@Mandatory JFrame window) {
         super(window, true);
         setTitle(TITLE);
         setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -24,12 +32,12 @@ public @Component class MovePackageDialog extends JDialog {
 
         Panel panel = new Panel(MARGIN, PADDING, Alignment.TOP_LEFT);
 
-        JLabel projectLabel = new JLabel("Source directory");
-        JTextField projectField = new JTextField();
+        JLabel projectLabel = new JLabel("Project directory");
+        projectField = new JTextField();
         JLabel fromLabel = new JLabel("From");
-        JTextField fromField = new JTextField();
+        fromField = new JTextField();
         JLabel toLabel = new JLabel("To");
-        JTextField toField = new JTextField();
+        toField = new JTextField();
         JButton moveButton = new JButton("Move");
         moveButton.addActionListener(new UserActionListener(this::move));
 
@@ -47,10 +55,17 @@ public @Component class MovePackageDialog extends JDialog {
     }
 
     private void move() {
-        // TODO
+        Refactoring.getInstance().refactor(
+            Path.of(projectField.getText()),
+            new JavaFileFilter(),
+            new RenamePackageAction(
+                fromField.getText(),
+                toField.getText()
+            )
+        );
     }
 
     public static void show(@Mandatory JFrame window) {
-        new MovePackageDialog(window).setVisible(true);
+        new RenamePackageDialog(window).setVisible(true);
     }
 }

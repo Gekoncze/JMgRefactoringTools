@@ -8,11 +8,11 @@ import cz.mg.test.Assert;
 
 import java.nio.file.Path;
 
-public @Test class MoveDirectoryActionTest {
+public @Test class RenamePackageActionTest {
     public static void main(String[] args) {
-        System.out.print("Running " + MoveDirectoryActionTest.class.getSimpleName() + " ... ");
+        System.out.print("Running " + RenamePackageActionTest.class.getSimpleName() + " ... ");
 
-        MoveDirectoryActionTest test = new MoveDirectoryActionTest();
+        RenamePackageActionTest test = new RenamePackageActionTest();
         test.testRun();
 
         System.out.println("OK");
@@ -31,7 +31,7 @@ public @Test class MoveDirectoryActionTest {
                 "public class FooBar {",
                 "}"
             ),
-            testRun(new MoveDirectoryAction(
+            testRun(new RenamePackageAction(
                 "cz",
                 "eu"
             ))
@@ -49,7 +49,7 @@ public @Test class MoveDirectoryActionTest {
                 "public class FooBar {",
                 "}"
             ),
-            testRun(new MoveDirectoryAction(
+            testRun(new RenamePackageAction(
                 "cz.mg.collections",
                 "cz.mg.data"
             ))
@@ -67,7 +67,7 @@ public @Test class MoveDirectoryActionTest {
                 "public class FooBar {",
                 "}"
             ),
-            testRun(new MoveDirectoryAction(
+            testRun(new RenamePackageAction(
                 "com.example",
                 "com.example2"
             ))

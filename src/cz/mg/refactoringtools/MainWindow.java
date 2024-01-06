@@ -1,9 +1,10 @@
 package cz.mg.refactoringtools;
 
 import cz.mg.annotations.classes.Component;
+import cz.mg.annotations.requirement.Mandatory;
 import cz.mg.panel.Panel;
 import cz.mg.panel.settings.Alignment;
-import cz.mg.refactoringtools.dialogs.MovePackageDialog;
+import cz.mg.refactoringtools.dialogs.RenamePackageDialog;
 import cz.mg.refactoringtools.event.UserActionListener;
 
 import javax.swing.*;
@@ -24,18 +25,20 @@ public @Component class MainWindow extends JFrame {
         setLocationRelativeTo(null);
 
         Panel panel = new Panel(MARGIN, PADDING, Alignment.MIDDLE);
-
-        JButton movePackageButton = new JButton("Move package");
-        movePackageButton.addActionListener(new UserActionListener(this::movePackage));
-        panel.addVertical(movePackageButton);
-
+        panel.addVertical(createButton("Rename package", this::renamePackage));
         panel.rebuild();
 
         getContentPane().add(panel);
     }
 
-    private void movePackage() {
-        MovePackageDialog.show(this);
+    private @Mandatory JButton createButton(@Mandatory String label, @Mandatory UserActionListener.Handler handler) {
+        JButton button = new JButton(label);
+        button.addActionListener(new UserActionListener(handler));
+        return button;
+    }
+
+    private void renamePackage() {
+        RenamePackageDialog.show(this);
     }
 
     public static void main(String[] args) {
