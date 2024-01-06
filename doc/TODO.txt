@@ -2,8 +2,8 @@
     ...
 
 ### SOON ###
+    finish implementation for MovePackageDialog
     add Refactoring test
-    add MoveDirectoryAction test
 
 ### LATER ###
     ...
