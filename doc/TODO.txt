@@ -2,7 +2,6 @@
     ...
 
 ### SOON ###
-    add DirectoryReader test
     add Refactoring test
     add MoveDirectoryAction test
 
