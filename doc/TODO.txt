@@ -4,7 +4,6 @@
 ### SOON ###
     add DirectoryReader test
     add Refactoring test
-    add JavaFileFilter test
     add MoveDirectoryAction test
 
 ### LATER ###
