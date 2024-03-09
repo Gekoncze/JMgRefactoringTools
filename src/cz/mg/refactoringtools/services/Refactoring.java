@@ -6,6 +6,7 @@ import cz.mg.file.page.Page;
 import cz.mg.file.page.PageReader;
 import cz.mg.file.page.PageWriter;
 import cz.mg.refactoringtools.actions.FileAction;
+import cz.mg.refactoringtools.entities.Result;
 import cz.mg.refactoringtools.filters.FileFilter;
 
 import java.nio.file.Path;
@@ -37,13 +38,24 @@ public @Service class Refactoring {
     /**
      * Runs given action for all files contained in given project directory.
      */
-    public void refactor(@Mandatory Path project, @Mandatory FileFilter filter, @Mandatory FileAction action) {
+    public @Mandatory Result refactor(
+        @Mandatory Path project,
+        @Mandatory FileFilter filter,
+        @Mandatory FileAction action
+    ) {
+        Result result = new Result();
+
         for (Path path : directoryReader.read(project, filter)) {
             Page page = pageReader.read(path);
             boolean modified = action.run(page);
             if (modified) {
                 pageWriter.write(page);
+                result.setModifiedFileCount(
+                    result.getModifiedFileCount() + 1
+                );
             }
         }
+
+        return result;
     }
 }

@@ -6,6 +6,7 @@ import cz.mg.panel.Panel;
 import cz.mg.panel.settings.Alignment;
 import cz.mg.panel.settings.Fill;
 import cz.mg.refactoringtools.actions.RenamePackageAction;
+import cz.mg.refactoringtools.entities.Result;
 import cz.mg.refactoringtools.event.UserActionListener;
 import cz.mg.refactoringtools.filters.JavaFileFilter;
 import cz.mg.refactoringtools.services.Refactoring;
@@ -55,13 +56,28 @@ public @Component class RenamePackageDialog extends JDialog {
     }
 
     private void move() {
-        Refactoring.getInstance().refactor(
-            Path.of(projectField.getText()),
-            new JavaFileFilter(),
-            new RenamePackageAction(
-                fromField.getText(),
-                toField.getText()
+        showResult(
+            Refactoring.getInstance().refactor(
+                Path.of(projectField.getText()),
+                new JavaFileFilter(),
+                new RenamePackageAction(
+                    fromField.getText(),
+                    toField.getText()
+                )
             )
+        );
+    }
+
+    private void showResult(@Mandatory Result result) {
+        String message = result.getModifiedFileCount() > 0
+            ? "Modified " + result.getModifiedFileCount() + " files."
+            : "Files are up to date.";
+
+        JOptionPane.showMessageDialog(
+            this,
+            message,
+            "Refactoring",
+            JOptionPane.INFORMATION_MESSAGE
         );
     }
 
